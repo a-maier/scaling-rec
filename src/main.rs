@@ -42,6 +42,10 @@ fn cmp_rec_fast<const N: usize>(
     let res_scal = rec_scaling(&rat, Xoshiro256StarStar::seed_from_u64(1));
     rat.print_and_reset_count();
     assert_eq!(res_hom, res_scal);
+    info!(
+        "Reconstructed function has {} independent coefficients",
+        res_scal.num().len() + res_scal.den().len() - 1
+    );
     res_hom
 }
 
