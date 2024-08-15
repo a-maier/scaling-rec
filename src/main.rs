@@ -80,7 +80,7 @@ fn rec_thiele_linear<const N: usize>(
     let Status::Rat(mut npts) = rec.status() else {
         panic!("Failed to reconstruct degrees")
     };
-    seq!{ M in 0..20 {{
+    seq!{ M in 0..10 {{
         const P: u64 = LARGE_PRIMES[M];
         let pts = Vec::from_iter(
             std::iter::repeat_with(|| {
@@ -134,7 +134,7 @@ fn rec_homogeneous_2(
     const NVARS: usize = 2;
 
     let mut rec = Rec2::with_shift(1, rng.gen());
-    seq!{ N in 0..20 {{
+    seq!{ N in 0..10 {{
         const P: u64 = LARGE_PRIMES[N];
         let z: [Z64<P>; NVARS] = [(); NVARS].map(|_| rng.gen());
         let q_z = orig.try_eval(&z).unwrap();
@@ -173,7 +173,7 @@ fn rec_homogeneous_4(
     const NVARS: usize = 4;
 
     let mut rec = Rec4::with_shift(1, rng.gen());
-    seq!{ N in 0..20 {{
+    seq!{ N in 0..10 {{
         const P: u64 = LARGE_PRIMES[N];
         let z: [Z64<P>; NVARS] = [(); NVARS].map(|_| rng.gen());
         let q_z = orig.try_eval(&z).unwrap();
@@ -229,7 +229,7 @@ fn rec_scaling<const N: usize>(
             z[n] += Z64::one() ;
         };
     }
-    seq!{ M in 0..20 {{
+    seq!{ M in 0..10 {{
         const P: u64 = LARGE_PRIMES[M];
         loop {
             let z: Z64<P> = rng.gen();
