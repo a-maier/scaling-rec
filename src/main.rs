@@ -212,7 +212,7 @@ fn rec_scaling<const N: usize>(
     info!("Starting scaling Thiele reconstruction");
     const P: u64 = LARGE_PRIMES[0];
 
-    let mut rec: Rec<P, N> = Rec::with_random_shift(2, &mut rng);
+    let mut rec: Rec<P, N> = Rec::with_random_shift(1, &mut rng);
     let (mut z, mut q_z) = std::iter::repeat_with(|| {
         let z: [Z64<P>; N] = [(); N].map(|_| rng.gen());
         orig.try_eval(&z).map(|q_z| (z, q_z))
