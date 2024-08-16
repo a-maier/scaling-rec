@@ -3,7 +3,7 @@ use expression::EvalCountingExpression;
 use log::info;
 use rand::{Rng, SeedableRng};
 use rand_xoshiro::Xoshiro256StarStar;
-use rare::{algebra::{poly::flat::FlatPoly, rat::Rat}, rec::{primes::LARGE_PRIMES, probe::Probe}, traits::{One, TryEval}, Z64};
+use rare::{algebra::{poly::flat::FlatPoly, rat::Rat}, rec::primes::LARGE_PRIMES, traits::{One, TryEval}, Z64};
 use rug::Integer;
 use seq_macro::seq;
 
@@ -16,24 +16,16 @@ fn main() {
         include_str!("../data/coeff_prop_4l")
     ).unwrap();
     info!("Reconstructing coefficient of four-loop propagator");
-    cmp_rec_all(expr);
+    cmp_rec(expr);
 
     let expr = EvalCountingExpression::<4>::try_from(
         include_str!("../data/aajamp")
     ).unwrap();
     info!("Reconstructing coefficient in two-loop diphoton plus jet amplitude");
-    cmp_rec_fast(expr);
+    cmp_rec(expr);
 }
 
-fn cmp_rec_all<const N: usize>(rat: EvalCountingExpression::<N>) {
-    let res_lin = rec_thiele_linear(&rat, Xoshiro256StarStar::seed_from_u64(1));
-    rat.print_and_reset_count();
-
-    let res_fast = cmp_rec_fast(rat);
-    assert_eq!(res_lin, res_fast);
-}
-
-fn cmp_rec_fast<const N: usize>(
+fn cmp_rec<const N: usize>(
     rat: EvalCountingExpression::<N>
 ) -> Rat<FlatPoly<Integer, N>> {
     let res_hom = rec_homogeneous(&rat, Xoshiro256StarStar::seed_from_u64(1));
@@ -47,57 +39,6 @@ fn cmp_rec_fast<const N: usize>(
         res_scal.num().len() + res_scal.den().len() - 1
     );
     res_hom
-}
-
-fn rec_thiele_linear<const N: usize>(
-    orig: &EvalCountingExpression<N>,
-    mut rng: impl Rng,
-) -> Rat<FlatPoly<Integer, N>>
-{
-    use rare::rec::rat::thiele_linear::{Rec, Status};
-
-    info!("Starting Thiele + linear reconstruction");
-    const P: u64 = LARGE_PRIMES[0];
-
-    let mut rec = Rec::new(1);
-    let (mut z, mut q_z) = std::iter::repeat_with(|| {
-        let z: [Z64<P>; N] = [(); N].map(|_| rng.gen());
-        orig.try_eval(&z).map(|q_z| (z, q_z))
-    })
-        .flatten()
-        .next()
-        .unwrap();
-    while let Status::Degree(n) = rec.add_pt(z, q_z) {
-        z[n] += Z64::one();
-        q_z = loop {
-            if let Some(val) = orig.try_eval(&z) {
-                break val;
-            }
-            z[n] += Z64::one() ;
-        };
-    }
-    // TODO: re-use points
-    let Status::Rat(mut npts) = rec.status() else {
-        panic!("Failed to reconstruct degrees")
-    };
-    seq!{ M in 0..10 {{
-        const P: u64 = LARGE_PRIMES[M];
-        let pts = Vec::from_iter(
-            std::iter::repeat_with(|| {
-                let arg: [Z64<P>; N] = [(); N].map(|_| rng.gen());
-                orig.try_eval(&arg).map(|val| Probe{arg, val})
-            })
-                .flatten()
-                .take(npts)
-        );
-        match rec.add_pts(&pts) {
-            Status::Rat(n) => npts = n,
-            Status::Done => return rec.into_rat().unwrap(),
-            _ => unreachable!("Unexpected reconstruction return value")
-        }
-    }}}
-    let _ = npts;
-    panic!("Need more than 20 characteristics!");
 }
 
 fn rec_homogeneous<'a, const N: usize>(
