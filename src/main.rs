@@ -101,7 +101,7 @@ fn rec_homogeneous_2(
         }
     }}
     }
-    panic!("Need more than 20 characteristics!");
+    panic!("Need more than 10 characteristics!");
 }
 
 fn rec_homogeneous_4(
@@ -140,7 +140,7 @@ fn rec_homogeneous_4(
         }
     }}
     }
-    panic!("Need more than 20 characteristics!");
+    panic!("Need more than 10 characteristics!");
 }
 
 fn rec_scaling<const N: usize>(
@@ -185,5 +185,5 @@ fn rec_scaling<const N: usize>(
             }
         }
     }}}
-    panic!("Need more than 20 characteristics!");
+    panic!("Need more than 10 characteristics!");
 }
