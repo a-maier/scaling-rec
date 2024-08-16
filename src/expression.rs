@@ -68,7 +68,7 @@ impl<const N: usize> EvalCountingExpression<N> {
     pub(crate) fn print_and_reset_count(&self) {
         let Self { last_mod, count, expression: _ } = self;
         if *count.borrow() != 0 {
-            info!("Probes over mod {}: {}", last_mod.borrow(), count.borrow())
+            info!("Probes mod {}: {}", last_mod.borrow(), count.borrow())
         }
         *count.borrow_mut() = 0;
     }

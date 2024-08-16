@@ -45,7 +45,7 @@ fn rec_homogeneous<'a, const N: usize>(
     orig: &'a EvalCountingExpression<N>,
     rng: impl Rng,
 ) -> Rat<FlatPoly<Integer, N>> {
-    info!("Starting homogeneous reconstruction");
+    info!("Starting \"dense homogeneous\" reconstruction");
     match N {
         2 => {
             let rat: &'a EvalCountingExpression<2> = unsafe {
@@ -150,7 +150,7 @@ fn rec_scaling<const N: usize>(
     use rare::rec::rat::thiele_multivar::{Rec, Status};
     use std::ops::ControlFlow::*;
 
-    info!("Starting scaling Thiele reconstruction");
+    info!("Starting \"scaling\" reconstruction");
     const P: u64 = LARGE_PRIMES[0];
 
     let mut rec: Rec<P, N> = Rec::with_random_shift(1, &mut rng);
