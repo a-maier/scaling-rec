@@ -27,7 +27,7 @@ fn main() {
 
 fn cmp_rec<const N: usize>(
     rat: EvalCountingExpression::<N>
-) -> Rat<FlatPoly<Integer, N>> {
+) {
     let res_hom = rec_homogeneous(&rat, Xoshiro256StarStar::seed_from_u64(1));
     rat.print_and_reset_count();
 
@@ -38,7 +38,6 @@ fn cmp_rec<const N: usize>(
         "Reconstructed function has {} independent coefficients",
         res_scal.num().len() + res_scal.den().len() - 1
     );
-    res_hom
 }
 
 fn rec_homogeneous<'a, const N: usize>(
