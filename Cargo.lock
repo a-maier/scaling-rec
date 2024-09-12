@@ -146,9 +146,9 @@ dependencies = [
 
 [[package]]
 name = "ffnt"
-version = "0.7.2"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3fc8be9c6e6a4fb20b3ebe5a15dee9b03d86b229f60407b81de6396c26b9b6f7"
+checksum = "5034e1aac8d7cc9dacb0e6614c98f5431ac220dad471aacfbd9c1db5afdd497f"
 dependencies = [
  "num-traits",
  "paste",
@@ -336,8 +336,8 @@ dependencies = [
 
 [[package]]
 name = "rare"
-version = "0.9.1"
-source = "git+ssh://git@gitlab.desy.de/tomuca/rare.git#1f67b3c7915c1846d1d075573ae3c766e7a04827"
+version = "0.9.2"
+source = "git+https://github.com/a-maier/rare.git?tag=0.9.2#ed358c18d1129482afa51b9debb66ceef169f642"
 dependencies = [
  "array-init",
  "ffnt",
