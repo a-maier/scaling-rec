@@ -28,118 +28,12 @@ fn main() {
 fn cmp_rec<const N: usize>(
     rat: EvalCountingExpression::<N>
 ) {
-    let res_hom = rec_homogeneous(&rat, Xoshiro256StarStar::seed_from_u64(1));
-    rat.print_and_reset_count();
-
     let res_scal = rec_scaling(&rat, Xoshiro256StarStar::seed_from_u64(1));
     rat.print_and_reset_count();
-    assert_eq!(res_hom, res_scal);
     info!(
         "Reconstructed function has {} independent coefficients",
         res_scal.num().len() + res_scal.den().len() - 1
     );
-}
-
-fn rec_homogeneous<'a, const N: usize>(
-    orig: &'a EvalCountingExpression<N>,
-    rng: impl Rng,
-) -> Rat<FlatPoly<Integer, N>> {
-    info!("Starting \"dense homogeneous\" reconstruction");
-    match N {
-        2 => {
-            let rat: &'a EvalCountingExpression<2> = unsafe {
-                std::mem::transmute(orig)
-            };
-            let res = rec_homogeneous_2(rat, rng);
-            unsafe{ std::mem::transmute(res) }
-        },
-        4 => {
-            let rat: &'a EvalCountingExpression<4> = unsafe {
-                std::mem::transmute(orig)
-            };
-            let res = rec_homogeneous_4(rat, rng);
-            unsafe{ std::mem::transmute(res) }
-        },
-        _ => unimplemented!("Homogenous reconstruction in {N} variables")
-    }
-}
-
-fn rec_homogeneous_2(
-    orig: &EvalCountingExpression<2>,
-    mut rng: impl Rng,
-) -> Rat<FlatPoly<Integer, 2>>
-{
-    use rare::rec::rat::cuyt_lee::{Rec2, Status};
-    use rare::rec::rat::finite::cuyt_lee::Needed;
-    const NVARS: usize = 2;
-
-    let mut rec = Rec2::with_shift(1, rng.gen());
-    seq!{ N in 0..10 {{
-        const P: u64 = LARGE_PRIMES[N];
-        let z: [Z64<P>; NVARS] = [(); NVARS].map(|_| rng.gen());
-        let q_z = orig.try_eval(&z).unwrap();
-        rec.add_pt(z, q_z).unwrap();
-        loop {
-            match rec.status().unwrap() {
-                Status::Done => return rec.into_rat().unwrap(),
-                Status::NextMod => break,
-                Status::Needed(Needed::Pts(pts)) => {
-                    let pts = Vec::from_iter(
-                        pts.iter()
-                            .filter_map(
-                                |z| orig.try_eval(z).map(|q_z| (*z, q_z))
-                            )
-                    );
-                    rec.add_pts(&pts).unwrap();
-                },
-                Status::Needed(Needed::Pt(z)) => {
-                    let q_z: Z64<P> = orig.try_eval(&z).unwrap();
-                    rec.add_pt(*z, q_z).unwrap();
-                }
-            }
-        }
-    }}
-    }
-    panic!("Need more than 10 characteristics!");
-}
-
-fn rec_homogeneous_4(
-    orig: &EvalCountingExpression<4>,
-    mut rng: impl Rng,
-) -> Rat<FlatPoly<Integer, 4>>
-{
-    use rare::rec::rat::cuyt_lee::{Rec4, Status};
-    use rare::rec::rat::finite::cuyt_lee::Needed;
-    const NVARS: usize = 4;
-
-    let mut rec = Rec4::with_shift(1, rng.gen());
-    seq!{ N in 0..10 {{
-        const P: u64 = LARGE_PRIMES[N];
-        let z: [Z64<P>; NVARS] = [(); NVARS].map(|_| rng.gen());
-        let q_z = orig.try_eval(&z).unwrap();
-        rec.add_pt(z, q_z).unwrap();
-        loop {
-            match rec.status().unwrap() {
-                Status::Done => return rec.into_rat().unwrap(),
-                Status::NextMod => break,
-                Status::Needed(Needed::Pts(pts)) => {
-                    let pts = Vec::from_iter(
-                        pts.iter()
-                            .filter_map(
-                                |z| orig.try_eval(z).map(|q_z| (*z, q_z))
-                            )
-                    );
-                    rec.add_pts(&pts).unwrap();
-                },
-                Status::Needed(Needed::Pt(z)) => {
-                    let q_z: Z64<P> = orig.try_eval(&z).unwrap();
-                    rec.add_pt(*z, q_z).unwrap();
-                }
-            }
-        }
-    }}
-    }
-    panic!("Need more than 10 characteristics!");
 }
 
 fn rec_scaling<const N: usize>(
