@@ -3,15 +3,18 @@
 << FiniteFlow`;
 
 rec[file_] := Module[
-   {expr, dummy},
+   {expr, dummy, vars},
    Print["Reconstructing ", file];
-   expr = Get[file];
-   FFSparseSolve[
-      {dummy == Together[expr]},
-      {dummy},
+   expr = Together[Get[file]];
+   vars = Variables[expr];
+   FFNewGraph["g", "in", vars];
+   FFAlgRatFunEval["g", "rf", {"in"}, vars, {expr}];
+   FFGraphOutput["g", "rf"];
+   FFReconstructFunctionMod[
+      "g",
+      vars,
       "PrintDebugInfo" -> 1,
-      "MaxDegree" -> 200,
-      "MaxPrimes" -> 200
+      "MaxDegree" -> 200
    ];
 ];
 
