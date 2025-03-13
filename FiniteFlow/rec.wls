@@ -2,9 +2,8 @@
 
 << FiniteFlow`;
 
-rec[file_] := Module[
+rec[file_, args___] := Module[
    {expr, dummy, vars},
-   Print["Reconstructing ", file];
    expr = Together[Get[file]];
    vars = Variables[expr];
    FFNewGraph["g", "in", vars];
@@ -14,9 +13,17 @@ rec[file_] := Module[
       "g",
       vars,
       "PrintDebugInfo" -> 1,
-      "MaxDegree" -> 200
+      "MaxDegree" -> 200,
+      args
    ];
 ];
 
-rec["../data/aajamp"];
-rec["../data/coeff_prop_4l"];
+Do[
+   If[Length[opt] > 0,
+      Print["Reconstructing ", file, " with options ", opt],
+      Print["Reconstructing ", file]
+   ];
+   (rec["../data/" <> file, ##]& @@ opt),
+   {file, {"coeff_prop_4l", "aajamp"}},
+   {opt, {{}, {"PolyRecMethod" -> FFPolyVandermonde}}}
+];
