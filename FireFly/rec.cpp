@@ -33,6 +33,8 @@ int main() {
     rec.reconstruct();
   }
 
+  firefly::RatReconst::reset(true);
+
   {
     std::cerr << "Reconstructing coeff_prop_4l\n";
     BlackBoxUser bb{
