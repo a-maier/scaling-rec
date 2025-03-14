@@ -33,6 +33,17 @@ int main() {
     rec.reconstruct();
   }
 
+  {
+    std::cerr << "Reconstructing aajamp with factor scan\n";
+    BlackBoxUser bb{
+      "../scaling-rec/data/aajamp",
+      {"x12", "x23", "x34", "x45", "x51"}
+    };
+    firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
+    rec.enable_factor_scan();
+    rec.reconstruct();
+  }
+
   firefly::RatReconst::reset(true);
 
   {
@@ -42,6 +53,17 @@ int main() {
       {"z", "d"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
+    rec.reconstruct();
+  }
+
+  {
+    std::cerr << "Reconstructing coeff_prop_4l with factor scan\n";
+    BlackBoxUser bb{
+      "../scaling-rec/data/coeff_prop_4l",
+      {"z", "d"}
+    };
+    firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
+    rec.enable_factor_scan();
     rec.reconstruct();
   }
 }
