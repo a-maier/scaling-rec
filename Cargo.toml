@@ -15,5 +15,5 @@ seq-macro = "0.3.5"
 
 [dependencies.rare]
 git = "https://github.com/a-maier/rare.git"
-features = ["cuyt-lee-rec", "thiele-multivar"]
+features = ["thiele-multivar"]
 tag = "0.9.2"
