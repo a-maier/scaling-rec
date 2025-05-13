@@ -44,6 +44,27 @@ int main() {
     rec.reconstruct();
   }
 
+  {
+    std::cerr << "Reconstructing aajamp w/out monomial factors\n";
+    BlackBoxUser bb{
+      "../scaling-rec/data/aajamp_mod",
+      {"x12", "x23", "x34", "x45", "x51"}
+    };
+    firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
+    rec.reconstruct();
+  }
+
+  {
+    std::cerr << "Reconstructing aajamp w/out monomial factors with factor scan\n";
+    BlackBoxUser bb{
+      "../scaling-rec/data/aajamp_mod",
+      {"x12", "x23", "x34", "x45", "x51"}
+    };
+    firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
+    rec.enable_factor_scan();
+    rec.reconstruct();
+  }
+
   firefly::RatReconst::reset(true);
 
   {
@@ -60,6 +81,27 @@ int main() {
     std::cerr << "Reconstructing coeff_prop_4l with factor scan\n";
     BlackBoxUser bb{
       "../scaling-rec/data/coeff_prop_4l",
+      {"z", "d"}
+    };
+    firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
+    rec.enable_factor_scan();
+    rec.reconstruct();
+  }
+
+  {
+    std::cerr << "Reconstructing coeff_prop_4l w/out monomial factors\n";
+    BlackBoxUser bb{
+      "../scaling-rec/data/coeff_prop_4l_mod",
+      {"z", "d"}
+    };
+    firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
+    rec.reconstruct();
+  }
+
+  {
+    std::cerr << "Reconstructing coeff_prop_4l w/out monomial factors with factor scan\n";
+    BlackBoxUser bb{
+      "../scaling-rec/data/coeff_prop_4l_mod",
       {"z", "d"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};

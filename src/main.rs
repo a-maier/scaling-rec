@@ -18,10 +18,22 @@ fn main() {
     info!("Reconstructing coefficient of four-loop propagator");
     cmp_rec(expr);
 
+    let expr = EvalCountingExpression::<2>::try_from(
+        include_str!("../data/coeff_prop_4l_mod")
+    ).unwrap();
+    info!("Reconstructing coefficient of four-loop propagator w/out monomial factors");
+    cmp_rec(expr);
+
     let expr = EvalCountingExpression::<4>::try_from(
         include_str!("../data/aajamp")
     ).unwrap();
     info!("Reconstructing coefficient in two-loop diphoton plus jet amplitude");
+    cmp_rec(expr);
+
+    let expr = EvalCountingExpression::<4>::try_from(
+        include_str!("../data/aajamp_mod")
+    ).unwrap();
+    info!("Reconstructing coefficient in two-loop diphoton plus jet amplitude w/out monomial factors");
     cmp_rec(expr);
 }
 
