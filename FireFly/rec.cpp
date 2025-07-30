@@ -26,7 +26,7 @@ int main() {
   {
     std::cerr << "Reconstructing aajamp\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/aajamp",
+      "data/aajamp",
       {"x12", "x23", "x34", "x45", "x51"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
@@ -36,7 +36,7 @@ int main() {
   {
     std::cerr << "Reconstructing aajamp with factor scan\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/aajamp",
+      "data/aajamp",
       {"x12", "x23", "x34", "x45", "x51"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
@@ -47,7 +47,7 @@ int main() {
   {
     std::cerr << "Reconstructing aajamp w/out monomial factors\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/aajamp_mod",
+      "data/aajamp_mod",
       {"x12", "x23", "x34", "x45", "x51"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
@@ -57,7 +57,7 @@ int main() {
   {
     std::cerr << "Reconstructing aajamp w/out monomial factors with factor scan\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/aajamp_mod",
+      "data/aajamp_mod",
       {"x12", "x23", "x34", "x45", "x51"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{5, 1, bb};
@@ -70,7 +70,7 @@ int main() {
   {
     std::cerr << "Reconstructing coeff_prop_4l\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/coeff_prop_4l",
+      "data/coeff_prop_4l",
       {"z", "d"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
@@ -80,7 +80,7 @@ int main() {
   {
     std::cerr << "Reconstructing coeff_prop_4l with factor scan\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/coeff_prop_4l",
+      "data/coeff_prop_4l",
       {"z", "d"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
@@ -91,7 +91,7 @@ int main() {
   {
     std::cerr << "Reconstructing coeff_prop_4l w/out monomial factors\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/coeff_prop_4l_mod",
+      "data/coeff_prop_4l_mod",
       {"z", "d"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
@@ -101,7 +101,7 @@ int main() {
   {
     std::cerr << "Reconstructing coeff_prop_4l w/out monomial factors with factor scan\n";
     BlackBoxUser bb{
-      "../scaling-rec/data/coeff_prop_4l_mod",
+      "data/coeff_prop_4l_mod",
       {"z", "d"}
     };
     firefly::Reconstructor<BlackBoxUser> rec{2, 1, bb};
