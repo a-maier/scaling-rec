@@ -23,7 +23,7 @@ Do[
       Print["Reconstructing ", file, " with options ", opt],
       Print["Reconstructing ", file]
    ];
-   (rec["../data/" <> file, ##]& @@ opt),
+   (rec["data/" <> file, ##]& @@ opt),
    {file, {"coeff_prop_4l", "coeff_prop_4l_mod", "aajamp", "aajamp_mod"}},
    {opt, {{}, {"PolyRecMethod" -> FFPolyVandermonde}}}
 ];
