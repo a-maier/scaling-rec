@@ -36,5 +36,5 @@ FiniteFlow/rec.wls
 ```
 
 [1]: https://github.com/a-maier/rare
-[2]: https://github.com/jklappert/FireFly/
+[2]: https://gitlab.com/firefly-library/firefly
 [3]: https://github.com/peraro/finiteflow
